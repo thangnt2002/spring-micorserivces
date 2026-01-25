@@ -21,10 +21,10 @@ public class UserProfile {
     @Id
     @GeneratedValue(generatorClass = UUIDStringGenerator.class)
     String id;
+    // from identity service
     @Property("userId")
     String userId;
     String avatar;
-    String username;
     String email;
     String firstName;
     String lastName;
