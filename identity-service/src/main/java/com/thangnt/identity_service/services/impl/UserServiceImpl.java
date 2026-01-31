@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toUser(userCreationRequest);
         Set<Role> roles = new HashSet<>();
         roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
-        UserCreationResponse response = userMapper.toUserResponse(user);
         user.setPassword(passwordEncoder.encode(userCreationRequest.getPassword()));
         user.setRoles(roles);
         try{
@@ -54,11 +53,10 @@ public class UserServiceImpl implements UserService {
         }catch (DataIntegrityViolationException e){
             throw new BusinessException(ErrorCode.USER_EXISTED.getCode());
         }
-
         UserProfileCreationRequest userProfileRequest = userProfileMapper.toUserProfileRequest(userCreationRequest);
         userProfileRequest.setUserId(user.getId());
         profileClient.createUserProfile(userProfileRequest);
-
+        UserCreationResponse response = userMapper.toUserResponse(user);
         return ApiResponse.<UserCreationResponse>builder()
                 .success(true).code(201)
                 .data(response)

@@ -1,4 +1,4 @@
-package com.thangnt.profile_service.controllers;
+package com.thangnt.profile_service.controllers.internal;
 
 import com.thangnt.profile_service.dto.ApiResponse;
 import com.thangnt.profile_service.dto.requests.UserProfileRequest;
@@ -9,22 +9,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/internal/users")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class UserProfileController
+public class InternalUserProfileController
 {
     UserProfileService userProfileService;
-    @GetMapping("/{id}")
-    private ApiResponse<UserProfileResponse> findById(@PathVariable String id){
-        return userProfileService.findById(id);
+    @PostMapping
+    private ApiResponse<UserProfileResponse> create(@RequestBody UserProfileRequest request){
+        return userProfileService.create(request);
     }
 
-    @GetMapping
-    private ApiResponse<List<UserProfileResponse>> getAll(){
-        return userProfileService.getAll();
+    @PutMapping
+    private ApiResponse<UserProfileResponse> update(@RequestBody UserProfileRequest request){
+        return userProfileService.update(request);
     }
+
 }

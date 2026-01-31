@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -43,6 +45,20 @@ public class UserProfileServiceImpl implements UserProfileService {
                 .success(true)
                 .code(200)
                 .data(userProfileMapper.toUserProfileResponse(userProfile))
+                .build();
+    }
+
+    @Override
+    public ApiResponse<List<UserProfileResponse>> getAll() {
+        List<UserProfileResponse> response = userProfileRepository
+                .findAll()
+                .stream()
+                .map(userProfileMapper::toUserProfileResponse)
+                .toList();
+        return ApiResponse.<List<UserProfileResponse>>builder()
+                .success(true)
+                .code(200)
+                .data(response)
                 .build();
     }
 }

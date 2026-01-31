@@ -1,11 +1,16 @@
 package com.thangnt.identity_service.dto.response;
 
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationResponse {
     String id;
     String firstName;
