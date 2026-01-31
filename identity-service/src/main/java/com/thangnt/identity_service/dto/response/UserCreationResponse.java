@@ -8,8 +8,6 @@ import java.util.Set;
 @Data
 public class UserCreationResponse {
     String id;
-    String userName;
-    String password;
     String firstName;
     String lastName;
     LocalDate dob;

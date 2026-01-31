@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
         }
 
         UserProfileCreationRequest userProfileRequest = userProfileMapper.toUserProfileRequest(userCreationRequest);
+        userProfileRequest.setUserId(user.getId());
         profileClient.createUserProfile(userProfileRequest);
 
         return ApiResponse.<UserCreationResponse>builder()

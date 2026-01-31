@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Objects;
 
-@FeignClient(name = "profile-service", url = "http://localhost:8081/profile")
+@FeignClient(name = "profile-service", url = "${app.service.profile")
 public interface ProfileClient {
 
     @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    Objects createUserProfile(@RequestBody UserProfileCreationRequest request);
+    Object createUserProfile(@RequestBody UserProfileCreationRequest request);
 
 }

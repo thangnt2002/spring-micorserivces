@@ -8,9 +8,6 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Jacksonized
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserProfileResponse {
     String id;

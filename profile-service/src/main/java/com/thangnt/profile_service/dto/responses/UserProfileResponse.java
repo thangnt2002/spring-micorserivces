@@ -1,9 +1,8 @@
 package com.thangnt.profile_service.dto.responses;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.jackson.Jacksonized;
 
 import java.time.LocalDate;
 
