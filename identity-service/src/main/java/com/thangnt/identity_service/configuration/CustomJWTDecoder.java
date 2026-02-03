@@ -1,6 +1,8 @@
 package com.thangnt.identity_service.configuration;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.SignedJWT;
 import com.thangnt.identity_service.dto.request.IntrospectTokenRequest;
 import com.thangnt.identity_service.services.AuthenticationService;
 
@@ -29,27 +31,38 @@ public class CustomJWTDecoder implements JwtDecoder {
 
     @Override
     public Jwt decode(String token) throws JwtException {
+//        try {
+//            var response = authenticationService.introspectToken(IntrospectTokenRequest
+//                    .builder()
+//                    .token(token)
+//                    .build());
+//            if(!response.getData().isValid()){
+//                throw new JwtException("Token invalid");
+//            }
+//        } catch (JOSEException e) {
+//            throw new RuntimeException(e);
+//        } catch (ParseException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        if(Objects.isNull(nimbusJwtDecoder)){
+//            SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
+//            nimbusJwtDecoder = NimbusJwtDecoder
+//                    .withSecretKey(secretKeySpec)
+//                    .macAlgorithm(MacAlgorithm.HS512)
+//                    .build();
+//        }
+//        return nimbusJwtDecoder.decode(token);
         try {
-            var response = authenticationService.introspectToken(IntrospectTokenRequest
-                    .builder()
-                    .token(token)
-                    .build());
-            if(!response.getData().isValid()){
-                throw new JwtException("Token invalid");
-            }
-        } catch (JOSEException e) {
-            throw new RuntimeException(e);
+            SignedJWT jwt = SignedJWT.parse(token);
+            return new Jwt(token,
+                    jwt.getJWTClaimsSet().getIssueTime().toInstant(),
+                    jwt.getJWTClaimsSet().getExpirationTime().toInstant(),
+                    jwt.getHeader().toJSONObject(),
+                    jwt.getJWTClaimsSet().toJSONObject()
+            );
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-
-        if(Objects.isNull(nimbusJwtDecoder)){
-            SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
-            nimbusJwtDecoder = NimbusJwtDecoder
-                    .withSecretKey(secretKeySpec)
-                    .macAlgorithm(MacAlgorithm.HS512)
-                    .build();
-        }
-        return nimbusJwtDecoder.decode(token);
     }
 }

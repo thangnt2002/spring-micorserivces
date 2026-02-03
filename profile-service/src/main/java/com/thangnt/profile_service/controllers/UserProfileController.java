@@ -7,6 +7,7 @@ import com.thangnt.profile_service.services.UserProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class UserProfileController
         return userProfileService.findById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    private ApiResponse<List<UserProfileResponse>> getAll(){
+     ApiResponse<List<UserProfileResponse>> getAll(){
         return userProfileService.getAll();
     }
 }
