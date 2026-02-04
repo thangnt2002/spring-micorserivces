@@ -21,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private String[] PUBLIC_ENDPOINT = {};
+    private String[] PUBLIC_ENDPOINT = {"/internal/users/registration"};
 
     @Autowired
     private CustomJWTDecoder customJWTDecoder;
