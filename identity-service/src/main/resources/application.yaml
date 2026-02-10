@@ -15,6 +15,12 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 jwt:
   signerkey: 5517010be55559740935ff533f504ec82054e3b73df043a3a141578470ff13bc;
   valid-duration: 50000 # in seconds

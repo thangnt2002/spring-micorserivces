@@ -2,6 +2,7 @@ package com.thangnt.identity_service.services.impl;
 
 import com.thangnt.identity_service.common.PredefinedRole;
 import com.thangnt.identity_service.dto.ApiResponse;
+import com.thangnt.event.NotificationEvent;
 import com.thangnt.identity_service.dto.request.UserCreationRequest;
 import com.thangnt.identity_service.dto.request.UserProfileCreationRequest;
 import com.thangnt.identity_service.dto.request.UserUpdateRequest;
@@ -21,7 +22,9 @@ import com.thangnt.identity_service.services.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserServiceImpl implements UserService {
 
      UserRepository userRepository;
@@ -41,6 +45,7 @@ public class UserServiceImpl implements UserService {
      RoleRepository roleRepository;
      ProfileClient profileClient;
      UserProfileMapper userProfileMapper;
+     KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public ApiResponse<UserCreationResponse> create(UserCreationRequest userCreationRequest) {
@@ -58,6 +63,15 @@ public class UserServiceImpl implements UserService {
         userProfileRequest.setUserId(user.getId());
         profileClient.createUserProfile(userProfileRequest);
         UserCreationResponse response = userMapper.toUserResponse(user);
+        NotificationEvent notificationEvent = NotificationEvent
+                .builder()
+                .subject("Subject")
+                .channel("EMAIL")
+                .recipient(userCreationRequest.getEmail())
+                .body("Body for "+user.getUsername())
+                .build();
+        log.info("Event = {}", notificationEvent);
+        kafkaTemplate.send("notification-delivery", notificationEvent);
         return ApiResponse.<UserCreationResponse>builder()
                 .success(true).code(201)
                 .data(response)

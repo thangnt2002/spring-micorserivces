@@ -1,10 +1,7 @@
 package com.thangnt.notification_service.dto.requests;
 
 import com.thangnt.notification_service.dto.requests.email.Recipient;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -13,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class SendEmail {
     String htmlContent;
     String subject;

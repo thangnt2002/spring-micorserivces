@@ -26,7 +26,7 @@ public class SecurityConfiguration {
     private CustomJWTDecoder customJWTDecoder;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http){
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //security for api endpoint
         http.authorizeHttpRequests(request ->
                 request.requestMatchers(
