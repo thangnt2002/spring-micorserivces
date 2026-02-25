@@ -1,0 +1,12 @@
+package com.thangnt.file_service.common;
+
+public class Constant {
+    public static final String USER_NOT_FOUND = "User not found xx";
+    public static final String USER_EXISTED = "User already existed";
+    public static final String FORBIDDEN = "You don't have permission ";
+    public static final String SERVER_ERROR = "Server error";
+    public static final String UN_AUTHORIZE = "Un authorize";
+    public static final String INVALID_DOB = "Must be > {min}";
+    public static final String SEND_MAIL_FAILED = "Error when send email";
+    public static final String FILE_NOT_FOUND = "File not found";
+}
